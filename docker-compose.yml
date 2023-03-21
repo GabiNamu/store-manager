@@ -55,6 +55,7 @@ services:
     platform: linux/x86_64
     environment:
       MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_DATABASE: 'StoreManager'
     ports:
       # Garanta que não haverá conflitos de porta com um banco que esteja
       # rodando localmente
