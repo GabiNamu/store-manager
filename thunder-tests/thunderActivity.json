@@ -50,14 +50,9 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-21T18:47:21.683Z",
-    "modified": "2023-03-21T20:35:58.348Z",
+    "modified": "2023-03-21T20:44:58.620Z",
     "headers": [],
     "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"name\": \"taetae\"\n}",
-      "form": []
-    },
     "tests": []
   }
 ]
