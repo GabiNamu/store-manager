@@ -46,13 +46,18 @@
     "colId": "history",
     "containerId": "",
     "name": "http://localhost:3001/products/99",
-    "url": "http://localhost:3001/products/99",
-    "method": "GET",
+    "url": "http://localhost:3001/products",
+    "method": "POST",
     "sortNum": 0,
     "created": "2023-03-21T18:47:21.683Z",
-    "modified": "2023-03-21T18:47:21.683Z",
+    "modified": "2023-03-21T20:35:58.348Z",
     "headers": [],
     "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"name\": \"taetae\"\n}",
+      "form": []
+    },
     "tests": []
   }
 ]
