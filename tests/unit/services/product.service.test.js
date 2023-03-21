@@ -57,6 +57,36 @@ describe("Verificando service de produtos", function () {
     });
   });
 
+  describe("cadastro de um produto com valores inválidos", function () {
+    it("retorna um erro ao passar um nome inválido", async function () {
+      // arrange: Novamente não precisamos de um arranjo pois esse é um fluxo que não chama o model!
+
+      // act
+      const result = await productService.insert('a');
+
+      // assert
+      expect(result.type).to.equal("INVALID_VALUE");
+      expect(result.message).to.equal(
+        '"name" length must be at least 5 characters long'
+      );
+    });
+  });
+
+  describe("cadastro de um produto com valores válidos", function () {
+    it("retorna o ID do produto cadastrada", async function () {
+      // arrange
+      sinon.stub(productModel, "insert").resolves(1);
+      sinon.stub(productModel, "findById").resolves(listProduct[0]);
+
+      // act
+      const result = await productService.insert("Martelo de Thor");
+
+      // assert
+      expect(result.type).to.equal(null);
+      expect(result.message).to.deep.equal(listProduct[0]);
+    });
+  });
+
 
   afterEach(function () {
     sinon.restore();

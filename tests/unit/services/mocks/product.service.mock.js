@@ -9,6 +9,12 @@ const listProduct = [
   },
 ];
 
+const newProduct = {
+  id: 1,
+  name: "Martelo de Thor",
+};
+
 module.exports = {
   listProduct,
+  newProduct,
 };
