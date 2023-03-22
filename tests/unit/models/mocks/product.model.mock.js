@@ -14,7 +14,13 @@ const newProduct = {
   name: "Martelo de Thor",
 };
 
+const getProductByName = [{
+  id: 1,
+  name: "Martelo de Thor",
+}];
+
 module.exports = {
   listProduct,
   newProduct,
+  getProductByName,
 };

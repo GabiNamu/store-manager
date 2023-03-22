@@ -240,7 +240,151 @@ describe('Teste de unidade do passengerController', function () {
         });
       });
     });
-  afterEach(function () {
-    sinon.restore();
+  
+  describe("Deletando um produto", function () {
+    // it("deve deletar o produto e responder 204", async function () {
+    //   // Arrange
+    //   const res = {};
+    //   const req = {
+    //     params: { id: 1 },
+    //   };
+
+    //   res.status = sinon.stub().returns(res);
+    //   res.json = sinon.stub().returns();
+    //   sinon
+    //     .stub(productService, "deleteProduct")
+    //     .resolves({ type: null, message: '' });
+
+    //   // Act
+    //   await productController.deleteProduct(req, res);
+
+    //   // Assert
+    //   // expect(res.status.end).to.have.been.calledWith(204);
+    // });
+
+    it("ao passar um id inválido deve retornar um erro", async function () {
+      // Arrange
+      const res = {};
+      const req = {
+        params: { id: "abc" }, // passamos aqui um id inválido para forçar o erro esperado
+      };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      // Definimos o dublê do service retornando o contrato definido.
+      sinon
+        .stub(productService, "deleteProduct")
+        .resolves({ type: "INVALID_VALUE", message: '"id" must be a number' });
+
+      // Act
+      await productController.deleteProduct(req, res);
+
+      // Assert
+      // Avaliamos se chamou `res.status` com o valor 422
+      expect(res.status).to.have.been.calledWith(422);
+      // Avaliamos se chamou `res.status` com a mensagem esperada
+      expect(res.json).to.have.been.calledWith({
+        message: '"id" must be a number',
+      });
+    });
+
+    it("ao passar um id que não existe no banco de dados", async function () {
+      // Arrange
+      const res = {};
+      const req = {
+        params: { id: 99 }, // passamos aqui um id inválido para forçar o erro esperado
+      };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      // Definimos o dublê do service retornando o contrato definido.
+      sinon
+        .stub(productService, "deleteProduct")
+        .resolves({ type: "PRODUCT_NOT_FOUND", message: "Product not found" });
+
+      // Act
+      await productController.deleteProduct(req, res);
+
+      // Assert
+      // Avaliamos se chamou `res.status` com o valor 422
+      expect(res.status).to.have.been.calledWith(404);
+      // Avaliamos se chamou `res.status` com a mensagem esperada
+      expect(res.json).to.have.been.calledWith({
+        message: "Product not found",
+      });
+    });
   });
-});
+  
+  describe("Buscando um produto pelo nome", function () {
+    it("deve responder com 200 e os dados do banco quando existir", async function () {
+      // Arrange
+      const res = {};
+      const req = {
+        query: { q: 'mar' },
+      };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(productService, "findByName")
+        .resolves({ type: null, message: [listProduct[0]] });
+
+      // Act
+      await productController.findByName(req, res);
+
+      // Assert
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith([listProduct[0]]);
+    });
+
+    it("ao não passar uma query", async function () {
+      // Arrange
+      const res = {};
+      const req = { query: {q: ''}};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      // Definimos o dublê do service retornando o contrato definido.
+      sinon
+        .stub(productService, "findByName")
+        .resolves({ type: null, message: listProduct });
+
+      // Act
+      await productController.findByName(req, res);
+
+      // Assert
+      // Avaliamos se chamou `res.status` com o valor 422
+      expect(res.status).to.have.been.calledWith(200);
+      // Avaliamos se chamou `res.status` com a mensagem esperada
+      expect(res.json).to.have.been.calledWith(listProduct);
+    });
+
+    it("ao passae uma query que não existe", async function () {
+      // Arrange
+      const res = {};
+      const req = {
+        query: { q: 'abcdefg' }, // passamos aqui um id fictício para forçar o erro esperado
+      };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      // Definimos o dublê do service retornando o contrato definido para esse cenário
+      sinon.stub(productService, "findByName").resolves({
+        type: null,
+        message: [],
+      });
+
+      // Act
+      await productController.findByName(req, res);
+
+      // Assert
+      // Avaliamos se chamou `res.status` com o valor 404
+      expect(res.status).to.have.been.calledWith(200);
+      // Avaliamos se chamou `res.status` com a mensagem esperada
+      expect(res.json).to.have.been.calledWith([]);
+    });
+  });
+    afterEach(function () {
+      sinon.restore();
+    });
+  });
