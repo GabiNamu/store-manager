@@ -1,11 +1,9 @@
 const { saleProductModel, saleModel } = require('../models');
 const { validateNewSale } = require('./validations/validationsInputValues');
+const { validateId } = require('./validations/validationsInputValues');
 
 const insert = async (sales) => {
   const error = await validateNewSale(sales);
-  console.log(error);
-  console.log(error.type);
-  console.log(error.message);
   if (error.type) return error;
 
   const saleId = await saleModel.insert();
@@ -20,6 +18,24 @@ const insert = async (sales) => {
   return { type: null, message: { id: saleId, itemsSold: formatNewSale } };
 };
 
+const findAll = async () => {
+  const products = await saleModel.findAll();
+  return { type: null, message: products };
+};
+
+const findById = async (id) => {
+  const error = validateId(id);
+
+  if (error.type) return error;
+
+  const sale = await saleModel.findById(id);
+  if (sale.length === 0) return { type: 'SALE_NOT_FOUND', message: 'Sale not found' };
+
+  return { type: null, message: sale };
+};
+
 module.exports = {
   insert,
+  findAll,
+  findById,
 };
