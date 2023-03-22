@@ -31,6 +31,15 @@ describe("Product Model", function () {
    // Assert
    expect(result).to.equal(1);
  });
+  
+  it("Atualizando um produto", async function () {
+    // Arrange
+    sinon.stub(connection, "execute").resolves([{ insertId: 1 }]);
+    // Act
+    const result = await productModel.update(newProduct.name, newProduct.id);
+    // Assert
+    expect(result).to.equal(1);
+  });
 
   afterEach(function () {
     sinon.restore();
