@@ -15,6 +15,14 @@ const findById = async (id) => {
   return passenger;
 };
 
+const findByName = async (q) => {
+  const [passenger] = await connection.execute(
+    'SELECT * FROM products WHERE name LIKE ?',
+    [`%${q}%`],
+  );
+  return passenger;
+};
+
 const insert = async ({ name }) => {
   const [{ insertId }] = await connection.execute(
     'INSERT INTO products (name) VALUE (?)',
@@ -42,4 +50,5 @@ module.exports = {
   insert,
   update,
   deleteProduct,
+  findByName,
 };
