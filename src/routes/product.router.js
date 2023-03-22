@@ -8,5 +8,6 @@ router.get('/', productController.findAll);
 router.get('/:id', productController.findById);
 router.post('/', validateName, productController.insert);
 router.put('/:id', validateName, productController.update);
+router.delete('/:id', productController.deleteProduct);
 
 module.exports = router;
