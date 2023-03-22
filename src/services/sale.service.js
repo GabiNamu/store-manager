@@ -12,6 +12,7 @@ const insert = async (sales) => {
   );
 
   const newSale = await saleProductModel.findById(saleId);
+  console.log(newSale);
 
   return { type: null, message: { id: saleId, itemsSold: newSale } };
 };
